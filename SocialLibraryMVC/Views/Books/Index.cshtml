@@ -1,0 +1,86 @@
+﻿@model IEnumerable<SocialLibraryMVC.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Authors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublishYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ISBN_10)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ISBN_13)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cover)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Authors.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISBN_10)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISBN_13)
+            </td>
+            <td>
+                    @if (item.Cover != null)
+                    {
+                        <img id="cover" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Cover))">
+                    }
+                    else
+                    {
+                        <img id="cover" style="width:350px;height:350px; object-fit:cover" src="">
+                    }
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ISBN_13">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ISBN_13">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ISBN_13">Delete</a> |
+                <a asp-controller="Reviews" asp-action="Create">Review</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
