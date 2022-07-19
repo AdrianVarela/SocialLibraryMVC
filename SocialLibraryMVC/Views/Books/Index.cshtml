@@ -66,17 +66,17 @@
             <td>
                     @if (item.Cover != null)
                     {
-                        <img id="cover" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Cover))">
+                        <img id="cover" style="width:250px;height:250px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Cover))">
                     }
                     else
                     {
-                        <img id="cover" style="width:350px;height:350px; object-fit:cover" src="">
+                        <img id="cover" style="width:250px;height:250px; object-fit:cover" src="">
                     }
             </td>
 
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ISBN_13">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ISBN_13">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.ISBN_13">Edit</a> |
                 <a asp-action="Delete" asp-route-id="@item.ISBN_13">Delete</a> |
                 <a asp-controller="Reviews" asp-action="Create">Review</a>
             </td>
