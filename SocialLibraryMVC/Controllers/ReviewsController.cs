@@ -48,6 +48,7 @@ namespace SocialLibraryMVC.Controllers
         }
 
         // GET: Reviews/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["User_id"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id");
@@ -59,6 +60,7 @@ namespace SocialLibraryMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,User_id,Text_review,Rating,Isbn_13")] Review reviews)
         {
             if (ModelState.IsValid)
@@ -72,6 +74,7 @@ namespace SocialLibraryMVC.Controllers
         }
 
         // GET: Reviews/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Reviews == null)
@@ -93,6 +96,7 @@ namespace SocialLibraryMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,User_id,Text_review,Rating,Isbn_13")] Review reviews)
         {
             if (id != reviews.Id)
@@ -125,6 +129,7 @@ namespace SocialLibraryMVC.Controllers
         }
 
         // GET: Reviews/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Reviews == null)
@@ -146,6 +151,7 @@ namespace SocialLibraryMVC.Controllers
         // POST: Reviews/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Reviews == null)

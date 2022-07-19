@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -42,10 +43,15 @@ namespace SocialLibraryMVC.Controllers
                 return NotFound();
             }
 
+            ViewBag.Cover = null;
+            if (books.Cover != null)
+                ViewBag.Cover = books.Cover;
+
             return View(books);
         }
 
         // GET: Books/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name");
@@ -58,6 +64,7 @@ namespace SocialLibraryMVC.Controllers
         //[Bind("Title,Description,AuthorId,Genre,PublishYear,ISBN_10,ISBN_13,Cover")] Books books
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Title,Description,AuthorId,Genre,PublishYear,ISBN_10,ISBN_13,Cover")] Book books)
         {
             if (ModelState.IsValid)
@@ -81,6 +88,7 @@ namespace SocialLibraryMVC.Controllers
         }
 
         // GET: Books/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null || _context.Books == null)
@@ -94,6 +102,9 @@ namespace SocialLibraryMVC.Controllers
                 return NotFound();
             }
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorId);
+            ViewBag.Cover = null;
+            if(books.Cover != null)
+                ViewBag.Cover = books.Cover;
             return View(books);
         }
 
@@ -102,6 +113,7 @@ namespace SocialLibraryMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(long id, [Bind("Title,Description,AuthorId,Genre,PublishYear,ISBN_10,ISBN_13,Cover")] Book books)
         {
             if (id != books.ISBN_13)
@@ -111,6 +123,15 @@ namespace SocialLibraryMVC.Controllers
 
             if (ModelState.IsValid)
             {
+                if (Request.Form.Files.Count > 0)
+                {
+                    IFormFile file = Request.Form.Files.FirstOrDefault();
+                    using (var dataStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(dataStream);
+                        books.Cover = dataStream.ToArray();
+                    }
+                }
                 try
                 {
                     _context.Update(books);
@@ -134,6 +155,7 @@ namespace SocialLibraryMVC.Controllers
         }
 
         // GET: Books/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null || _context.Books == null)
@@ -155,6 +177,7 @@ namespace SocialLibraryMVC.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
             if (_context.Books == null)

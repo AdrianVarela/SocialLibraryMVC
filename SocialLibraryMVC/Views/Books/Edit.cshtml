@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Genre" class="control-label"></label>
-                <select asp-for="Genre" class="form-control"></select>
+                <select asp-for="Genre" asp-items="Html.GetEnumSelectList<Genre>()" class="form-control"></select>
                 <span asp-validation-for="Genre" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -49,8 +49,19 @@
             </div>
             <div class="form-group">
                 <label asp-for="Cover" class="control-label"></label>
-                <input asp-for="Cover" class="form-control" />
+                <input asp-for="Cover" type="file" name="image" accept=".png,.jpg,.jpeg" class="form-control" onchange="document.getElementById('cover').src = window.URL.createObjectURL(this.files[0])"/>
                 <span asp-validation-for="Cover" class="text-danger"></span>
+            </div>
+            <div>
+                
+                @if (ViewBag.Cover != null)
+                {
+                    <img id="cover" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(ViewBag.Cover))">
+                }
+                else
+                {
+                    <img id="cover" style="width:350px;height:350px; object-fit:cover" src="">
+                }
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
