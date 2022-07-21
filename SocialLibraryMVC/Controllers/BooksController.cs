@@ -24,6 +24,7 @@ namespace SocialLibraryMVC.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Books.Include(b => b.Authors);
+            var authors = _context.Authors;
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -114,7 +115,7 @@ namespace SocialLibraryMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(long id, [Bind("Title,Description,AuthorId,Genre,PublishYear,ISBN_10,ISBN_13,Cover")] Book books)
+        public async Task<IActionResult> Edit(long id, [Bind("Title,Description,AuthorId,Genre,PublishYear,ISBN_10,ISBN_13")] Book books)
         {
             if (id != books.ISBN_13)
             {
@@ -131,6 +132,13 @@ namespace SocialLibraryMVC.Controllers
                         await file.CopyToAsync(dataStream);
                         books.Cover = dataStream.ToArray();
                     }
+                }
+                else
+                {
+                    // if there is an edit and no file is uploaded (meaning no new cover), keep the old cover
+                    Book? oldBook = FindBook(books.ISBN_13);
+                    if(oldBook != null)
+                        books.Cover = oldBook.Cover;
                 }
                 try
                 {
@@ -197,6 +205,13 @@ namespace SocialLibraryMVC.Controllers
         private bool BooksExists(long id)
         {
           return (_context.Books?.Any(e => e.ISBN_13 == id)).GetValueOrDefault();
+        }
+
+        private Book? FindBook(long isbn13)
+        {
+            Book? book = _context.Books.Find(isbn13);
+            _context.ChangeTracker.Clear();
+            return book;
         }
     }
 }

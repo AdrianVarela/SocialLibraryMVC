@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,17 +15,19 @@ namespace SocialLibraryMVC.Controllers
 {
     public class ReviewsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context; 
 
         public ReviewsController(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context; 
         }
+
 
         // GET: Reviews
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Reviews.Include(r => r.User);
+            var applicationDbContext = _context.Reviews.Include(r => r.Books).Include(r => r.User);
+            var users = _context.Users;
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -49,9 +52,28 @@ namespace SocialLibraryMVC.Controllers
 
         // GET: Reviews/Create
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create(long? isbn_13)
         {
-            ViewData["User_id"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id");
+            var alreadyMadeReview = await _context.Reviews
+                .FirstOrDefaultAsync(m => m.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            if(alreadyMadeReview != null)
+            {
+                return RedirectToAction(nameof(Edit));
+            }
+            //ViewData["User_id"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id");
+            if (isbn_13 == null || _context.Books == null)
+            {
+                return NotFound();
+            }
+            var reviews = await _context.Books
+                .Include(b => b.Authors)
+                .FirstOrDefaultAsync(m => m.ISBN_13 == isbn_13);
+            if(reviews == null)
+            {
+                return NotFound();
+            }
+            ViewData["ISBN_13"] = isbn_13;
+            ViewData["User_id"] = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return View();
         }
 
@@ -61,15 +83,16 @@ namespace SocialLibraryMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,User_id,Text_review,Rating,Isbn_13")] Review reviews)
+        public async Task<IActionResult> Create([Bind("Text_review,Rating,Isbn_13,User_id")] Review reviews)
         {
+            //reviews.User_id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (ModelState.IsValid)
             {
                 _context.Add(reviews);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["User_id"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", reviews.User_id);
+            ViewData["User_id"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", reviews.User_id);
             return View(reviews);
         }
 
@@ -87,7 +110,7 @@ namespace SocialLibraryMVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["User_id"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", reviews.User_id);
+            ViewData["User_id"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", reviews.User_id);
             return View(reviews);
         }
 
@@ -124,7 +147,7 @@ namespace SocialLibraryMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["User_id"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", reviews.User_id);
+            ViewData["User_id"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", reviews.User_id);
             return View(reviews);
         }
 

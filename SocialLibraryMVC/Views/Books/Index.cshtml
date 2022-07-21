@@ -78,7 +78,7 @@
                 <a asp-action="Details" asp-route-id="@item.ISBN_13">Details</a> |
                 <a asp-action="Edit" asp-route-id="@item.ISBN_13">Edit</a> |
                 <a asp-action="Delete" asp-route-id="@item.ISBN_13">Delete</a> |
-                <a asp-controller="Reviews" asp-action="Create">Review</a>
+                <a asp-controller="Reviews" asp-action="Create" asp-route-Isbn_13="@item.ISBN_13">Review</a>
             </td>
         </tr>
 }

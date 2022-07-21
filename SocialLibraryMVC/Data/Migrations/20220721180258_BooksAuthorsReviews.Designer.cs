@@ -12,7 +12,7 @@ using SocialLibraryMVC.Data;
 namespace SocialLibraryMVC.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220719151813_BooksAuthorsReviews")]
+    [Migration("20220721180258_BooksAuthorsReviews")]
     partial class BooksAuthorsReviews
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -308,15 +308,12 @@ namespace SocialLibraryMVC.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<long>("book_id")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("Isbn_13");
 
                     b.HasIndex("User_id")
                         .IsUnique();
-
-                    b.HasIndex("book_id");
 
                     b.ToTable("Reviews");
                 });
@@ -392,15 +389,15 @@ namespace SocialLibraryMVC.Data.Migrations
 
             modelBuilder.Entity("SocialLibraryMVC.Models.Review", b =>
                 {
-                    b.HasOne("SocialLibraryMVC.Models.ApplicationUser", "User")
-                        .WithOne("Reviews")
-                        .HasForeignKey("SocialLibraryMVC.Models.Review", "User_id")
+                    b.HasOne("SocialLibraryMVC.Models.Book", "Books")
+                        .WithMany()
+                        .HasForeignKey("Isbn_13")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SocialLibraryMVC.Models.Book", "Books")
-                        .WithMany()
-                        .HasForeignKey("book_id")
+                    b.HasOne("SocialLibraryMVC.Models.ApplicationUser", "User")
+                        .WithOne("Reviews")
+                        .HasForeignKey("SocialLibraryMVC.Models.Review", "User_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

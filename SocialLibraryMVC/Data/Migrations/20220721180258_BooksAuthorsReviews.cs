@@ -63,8 +63,7 @@ namespace SocialLibraryMVC.Data.Migrations
                     User_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Text_review = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<int>(type: "int", nullable: false),
-                    Isbn_13 = table.Column<long>(type: "bigint", nullable: false),
-                    book_id = table.Column<long>(type: "bigint", nullable: false)
+                    Isbn_13 = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,8 +75,8 @@ namespace SocialLibraryMVC.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reviews_Books_book_id",
-                        column: x => x.book_id,
+                        name: "FK_Reviews_Books_Isbn_13",
+                        column: x => x.Isbn_13,
                         principalTable: "Books",
                         principalColumn: "ISBN_13",
                         onDelete: ReferentialAction.Cascade);
@@ -89,9 +88,9 @@ namespace SocialLibraryMVC.Data.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_book_id",
+                name: "IX_Reviews_Isbn_13",
                 table: "Reviews",
-                column: "book_id");
+                column: "Isbn_13");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_User_id",
