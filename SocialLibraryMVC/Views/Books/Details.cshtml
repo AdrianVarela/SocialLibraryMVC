@@ -64,4 +64,20 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.ISBN_13">Edit</a> |
     <a asp-action="Index">Back to List</a>
+<script>
+    function loadDoc() { 
+        const xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/Reviews/_BookReviews?isbn_13=" + @Model.ISBN_13, true);
+        xhttp.send();
+        xhttp.onload = function() {
+             document.getElementById("reviewsDisplay").innerHTML = this.responseText; 
+        }
+    }
+loadDoc();
+</script>
+<h2>Reviews</h2>
+<div id="reviewsDisplay" class="pb-lg-5">
 </div>
+</div>
+
+@* await Html.PartialAsync("/Views/Reviews/Index.cshtml") *@

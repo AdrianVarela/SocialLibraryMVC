@@ -7,7 +7,9 @@ namespace SocialLibraryMVC.Models
     {
         [Required]
         public string Title { get; set; }
+        [MaxLength(1024)]
         public string Description { get; set; }
+        [Display(Name = "Author")]
         public int AuthorId { get; set; }
         [ForeignKey("AuthorId")]
         public virtual Author? Authors { get; set; }

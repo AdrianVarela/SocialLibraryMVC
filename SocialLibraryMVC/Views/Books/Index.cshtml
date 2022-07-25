@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Cover)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
@@ -34,7 +37,7 @@
                 @Html.DisplayNameFor(model => model.ISBN_13)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cover)
+                <h5>Rating</h5>
             </th>
             <th></th>
         </tr>
@@ -42,6 +45,16 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                    @if (item.Cover != null)
+                    {
+                        <img id="cover" style="width:250px;height:250px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Cover))">
+                    }
+                    else
+                    {
+                        <img id="cover" style="width:250px;height:250px; object-fit:cover" src="">
+                    }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -64,21 +77,13 @@
                 @Html.DisplayFor(modelItem => item.ISBN_13)
             </td>
             <td>
-                    @if (item.Cover != null)
-                    {
-                        <img id="cover" style="width:250px;height:250px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Cover))">
-                    }
-                    else
-                    {
-                        <img id="cover" style="width:250px;height:250px; object-fit:cover" src="">
-                    }
+                <p1>@ViewData["AverageRating" + item.ISBN_13] (@ViewData["CountRating"+item.ISBN_13])</p1>
             </td>
-
             <td>
-                <a asp-action="Details" asp-route-id="@item.ISBN_13">Details</a> |
-                <a asp-action="Edit" asp-route-id="@item.ISBN_13">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.ISBN_13">Delete</a> |
-                <a asp-controller="Reviews" asp-action="Create" asp-route-Isbn_13="@item.ISBN_13">Review</a>
+                <a asp-action="Details" asp-route-id="@item.ISBN_13" class="btn btn-primary">Details</a>
+                <a asp-action="Edit" asp-route-id="@item.ISBN_13" class="btn btn-primary">Edit</a>
+                <a asp-action="Delete" asp-route-id="@item.ISBN_13" class="btn btn-primary">Delete</a>
+                <a asp-controller="Reviews" asp-action="Create" asp-route-Isbn_13="@item.ISBN_13" class="btn btn-primary">Review</a>
             </td>
         </tr>
 }

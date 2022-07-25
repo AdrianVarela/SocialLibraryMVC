@@ -54,11 +54,12 @@ namespace SocialLibraryMVC.Controllers
         [Authorize]
         public async Task<IActionResult> Create(long? isbn_13)
         {
-            var alreadyMadeReview = await _context.Reviews
+            var alreadyMadeReview = await _context.Reviews.Include(b => b.Books)
                 .FirstOrDefaultAsync(m => m.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            if(alreadyMadeReview != null)
+
+            if(alreadyMadeReview != null && alreadyMadeReview.Isbn_13 == isbn_13)
             {
-                return RedirectToAction(nameof(Edit));
+                return RedirectToAction(nameof(Edit), alreadyMadeReview.Id);
             }
             //ViewData["User_id"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id");
             if (isbn_13 == null || _context.Books == null)
@@ -189,6 +190,13 @@ namespace SocialLibraryMVC.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Reviews/_BookReviews
+        public async Task<IActionResult> _BookReviews(long isbn_13)
+        {
+            var applicationDbContext = _context.Reviews.Include(r => r.Books).Include(r => r.User).Where(b => b.Isbn_13 == isbn_13);
+            return PartialView(await applicationDbContext.ToListAsync());
         }
 
         private bool ReviewsExists(int id)

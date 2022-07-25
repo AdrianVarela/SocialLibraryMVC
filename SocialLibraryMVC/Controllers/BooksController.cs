@@ -24,7 +24,17 @@ namespace SocialLibraryMVC.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Books.Include(b => b.Authors);
-            var authors = _context.Authors;
+            foreach(var book in applicationDbContext)
+            {
+                var reviews = _context.Reviews.Where(r => r.Isbn_13 == book.ISBN_13);
+                int sumRating = 0;
+                foreach (var review in reviews)
+                {
+                    sumRating += review.Rating;
+                }
+                ViewData["AverageRating"+book.ISBN_13] = (reviews.Count()>0)?((double)sumRating / reviews.Count()) : 0;
+                ViewData["CountRating"+book.ISBN_13] = reviews.Count();
+            }
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -83,7 +93,7 @@ namespace SocialLibraryMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorId).;
             return View(books);
 
         }
