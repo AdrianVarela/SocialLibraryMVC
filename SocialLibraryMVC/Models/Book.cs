@@ -5,6 +5,7 @@ namespace SocialLibraryMVC.Models
 {
     public class Book
     {
+
         [Required]
         public string Title { get; set; }
         [MaxLength(1024)]
@@ -15,16 +16,20 @@ namespace SocialLibraryMVC.Models
         public virtual Author? Authors { get; set; }
         public Genre Genre { get; set; }
         public int PublishYear { get; set; }
-        [RegularExpression(@"^[0-9]{10}$")]
+        [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "ISBN-10 should be 10 integers long")]
+        //
         public long? ISBN_10 { get; set; }
-        [RegularExpression(@"^[0-9]{13}$")]
+        // ISBN_13 should be 13 integers long, no longer and no shorter
+        [RegularExpression(@"^[0-9]{13}$", ErrorMessage = "ISBN-13 should be 13 integers long")]
         [Required]
         [Key]
+        // This option is so that the database doesn't generate its own ISBN_13 each time an entry is added, and lets the user add in the ISBN_13
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long ISBN_13 { get; set; }
         public byte[]? Cover { get; set; }
     }
 
+    // Certain genres have spaces, thus the display name should be different from the internal name
     public enum Genre
     {
         Fantasy, [Display(Name = "Science Fiction")]Science_Fiction, Dystopian, Action, Adventure, Mystery, Horror,

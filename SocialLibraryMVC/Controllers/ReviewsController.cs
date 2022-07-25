@@ -195,6 +195,7 @@ namespace SocialLibraryMVC.Controllers
         }
 
         // GET: Reviews/_BookReviews
+        // Partial View that should appear below the Details page of a particular book. Reviews shown should only be the reviews of the chosen book
         public async Task<IActionResult> _BookReviews(long isbn_13)
         {
             var applicationDbContext = _context.Reviews.Include(r => r.Books).Include(r => r.User).Where(b => b.Isbn_13 == isbn_13);

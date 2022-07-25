@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SocialLibraryMVC.Models
 {
+    // The author should only have basic information, the focus of this is the books and the reviews.
     public class Author
     {
         [Key]
