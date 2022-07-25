@@ -93,7 +93,7 @@ namespace SocialLibraryMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorId).;
+            ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorId);
             return View(books);
 
         }
