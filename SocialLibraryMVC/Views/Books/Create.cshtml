@@ -33,7 +33,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Genre" class="control-label"></label>
-                <select asp-for="Genre" asp-items="Html.GetEnumSelectList<Genre>()" class="form-control"></select>
+                <select asp-for="Genre" asp-items="Html.GetEnumSelectList<Genre>().OrderBy(p => p.Text)" class="form-control"></select>
                 <span asp-validation-for="Genre" class="text-danger"></span>
             </div>
             <div class="form-group">

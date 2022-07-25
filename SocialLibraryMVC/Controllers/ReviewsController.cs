@@ -59,7 +59,8 @@ namespace SocialLibraryMVC.Controllers
 
             if(alreadyMadeReview != null && alreadyMadeReview.Isbn_13 == isbn_13)
             {
-                return RedirectToAction(nameof(Edit), alreadyMadeReview.Id);
+                string redirect = nameof(Edit) + "?Id=" + alreadyMadeReview.Id;
+                return RedirectToAction(nameof(Edit), alreadyMadeReview);
             }
             //ViewData["User_id"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id");
             if (isbn_13 == null || _context.Books == null)
@@ -112,6 +113,7 @@ namespace SocialLibraryMVC.Controllers
                 return NotFound();
             }
             ViewData["User_id"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", reviews.User_id);
+            ViewData["ISBN_13"] = reviews.Isbn_13;
             return View(reviews);
         }
 

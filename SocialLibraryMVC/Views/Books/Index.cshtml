@@ -77,7 +77,7 @@
                 @Html.DisplayFor(modelItem => item.ISBN_13)
             </td>
             <td>
-                <p1>@ViewData["AverageRating" + item.ISBN_13] (@ViewData["CountRating"+item.ISBN_13])</p1>
+                <p>@ViewData["AverageRating" + item.ISBN_13] (@ViewData["CountRating"+item.ISBN_13])</p>
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.ISBN_13" class="btn btn-primary">Details</a>
