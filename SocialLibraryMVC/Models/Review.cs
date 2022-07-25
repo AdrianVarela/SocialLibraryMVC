@@ -20,8 +20,6 @@ namespace SocialLibraryMVC.Models
         public long Isbn_13 { get; set; }
         [ForeignKey("Isbn_13")]
 	    public virtual Book? Books { get; set; }
-
-        
     }
 
 }
