@@ -11,7 +11,7 @@ namespace SocialLibraryMVC.Models
         public int Id { get; set; }
         public string User_id { get; set; }
         [ForeignKey("User_id")]
-        public virtual IdentityUser User { get; set; }
+        public virtual IdentityUser? User { get; set; }
 
 	    public string? Text_review {get;set; }
         [Required]
