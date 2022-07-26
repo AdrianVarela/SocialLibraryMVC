@@ -112,6 +112,10 @@ namespace SocialLibraryMVC.Controllers
             {
                 return NotFound();
             }
+            if (IsAuthorized(reviews.User_id))
+            {
+                return RedirectToAction(nameof(Index));
+            }
             ViewData["User_id"] = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ViewData["ISBN_13"] = reviews.Isbn_13;
             return View(reviews);
@@ -171,6 +175,11 @@ namespace SocialLibraryMVC.Controllers
                 return NotFound();
             }
 
+            if(IsAuthorized(reviews.User_id))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             return View(reviews);
         }
 
@@ -187,6 +196,10 @@ namespace SocialLibraryMVC.Controllers
             var reviews = await _context.Reviews.FindAsync(id);
             if (reviews != null)
             {
+                if (IsAuthorized(reviews.User_id))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
                 _context.Reviews.Remove(reviews);
             }
             
@@ -205,6 +218,15 @@ namespace SocialLibraryMVC.Controllers
         private bool ReviewsExists(int id)
         {
           return (_context.Reviews?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private bool IsAuthorized(string user_id)
+        {
+            if (user_id != User.FindFirst(ClaimTypes.NameIdentifier).Value)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
