@@ -26,7 +26,7 @@ namespace SocialLibraryMVC.Controllers
         // GET: Reviews
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Reviews.Include(r => r.Books).Include(r => r.User);
+            var applicationDbContext = _context.Reviews.OrderByDescending(r => r.Id).Where(r => r.Id > _context.Reviews.OrderBy(r => r.Id).Last().Id - 10).Include(r => r.Books).Include(r => r.User);
             var users = _context.Users;
             return View(await applicationDbContext.ToListAsync());
         }
