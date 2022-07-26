@@ -24,6 +24,7 @@ namespace SocialLibraryMVC.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Books.Include(b => b.Authors);
+            // This foreach is to get the average ratings and the number of ratings for each book that will be displayed
             foreach(var book in applicationDbContext)
             {
                 var reviews = _context.Reviews.Where(r => r.Isbn_13 == book.ISBN_13);
@@ -113,6 +114,7 @@ namespace SocialLibraryMVC.Controllers
                 return NotFound();
             }
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorId);
+            // This viewbag is for the image display
             ViewBag.Cover = null;
             if(books.Cover != null)
                 ViewBag.Cover = books.Cover;
@@ -134,6 +136,7 @@ namespace SocialLibraryMVC.Controllers
 
             if (ModelState.IsValid)
             {
+                // If there was an image uploaded, then put that image onto the books.Cover property
                 if (Request.Form.Files.Count > 0)
                 {
                     IFormFile file = Request.Form.Files.FirstOrDefault();
@@ -143,9 +146,9 @@ namespace SocialLibraryMVC.Controllers
                         books.Cover = dataStream.ToArray();
                     }
                 }
+                // if there is an edit and no file is uploaded (meaning no new cover), keep the old cover
                 else
                 {
-                    // if there is an edit and no file is uploaded (meaning no new cover), keep the old cover
                     Book? oldBook = FindBook(books.ISBN_13);
                     if(oldBook != null)
                         books.Cover = oldBook.Cover;
