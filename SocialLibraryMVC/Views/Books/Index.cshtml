@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 style="text-align:center; padding-top:10px;">Welcome to the Social Library!</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" input class="btn btn-primary">Create New Book Entry</a>
 </p>
 <table class="table">
-    <thead>
+    <thead style="text-align:center;"> 
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Cover)
@@ -18,10 +18,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            <th>
+            <th style="text-align:center;">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
+            <th> 
                 @Html.DisplayNameFor(model => model.Authors)
             </th>
             <th>
@@ -37,9 +37,8 @@
                 @Html.DisplayNameFor(model => model.ISBN_13)
             </th>
             <th>
-                <h5>Rating</h5>
+                Rating
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -49,26 +48,26 @@
                     @* If the book has an image attached, take the Cover byte array and convert it into an image. If there is no image, keep the space, but don't display anything*@
                     @if (item.Cover != null)
                     {
-                        <img id="cover" style="width:250px;height:250px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Cover))">
+                        <img id="cover" style="width:160px;height:220px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Cover))">
                     }
                     else
                     {
-                        <img id="cover" style="width:250px;height:250px; object-fit:cover" src="">
+                        <img id="cover" style="width:150px;height:200px; object-fit:cover" src="">
                     }
             </td>
-            <td>
+            <td style="text-align:center;">
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            <td>
+            <td style="text-align:center;">
                 @Html.DisplayFor(modelItem => item.Authors.Name)
             </td>
-            <td>
+            <td style="text-align:center;">
                 @Html.DisplayFor(modelItem => item.Genre)
             </td>
-            <td>
+            <td style="text-align:center;">
                 @Html.DisplayFor(modelItem => item.PublishYear)
             </td>
             <td>
@@ -77,14 +76,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ISBN_13)
             </td>
-            <td>
+            <td style="text-align:center;">
                 @* The view data comes from the index action and takes the average rating and the number rating for each book *@
                 <p>@ViewData["AverageRating" + item.ISBN_13] (@ViewData["CountRating"+item.ISBN_13])</p>
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.ISBN_13" class="btn btn-primary">Details</a>
-                <a asp-action="Edit" asp-route-id="@item.ISBN_13" class="btn btn-primary">Edit</a>
-                <a asp-action="Delete" asp-route-id="@item.ISBN_13" class="btn btn-primary">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.ISBN_13" style="margin-bottom: 2px" class="btn btn-primary">Details</a>
+                <a asp-action="Edit" asp-route-id="@item.ISBN_13" style="margin-bottom: 2px" class="btn btn-primary">Edit</a>
+                <a asp-action="Delete" asp-route-id="@item.ISBN_13" style="margin-bottom: 2px" class="btn btn-primary">Delete</a>
                 @* This should link to the Review controller to create a new review for this particular book and user. If the review already exists, then redirect to the Edit action *@
                 <a asp-controller="Reviews" asp-action="Create" asp-route-Isbn_13="@item.ISBN_13" class="btn btn-primary">Review</a>
             </td>
