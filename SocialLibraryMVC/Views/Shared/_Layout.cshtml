@@ -62,10 +62,10 @@
                   <a class="nav-link" asp-controller="Reviews" asp-action="Index">Recent Reviews</a>
                 </li>
               </ul>
-              <form class="d-flex">
+@*              <form class="d-flex">
                 <input class="form-control me-sm-2" type="text" placeholder="Search">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-              </form>
+              </form>*@
               <partial name="_LoginPartial" />
             </div>
           </div>
@@ -81,7 +81,7 @@
 
     <footer class="border-top text-muted">
         <div class="container">
-            &copy; 2022 - SocialLibraryMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2022 - SocialLibraryMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-muted">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
