@@ -89,8 +89,8 @@
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.ISBN_13" style="margin-bottom: 2px" class="btn btn-primary">Details</a>
-                <a asp-action="Edit" asp-route-id="@item.ISBN_13" style="margin-bottom: 2px" class="btn btn-primary">Edit</a>
-                <a asp-action="Delete" asp-route-id="@item.ISBN_13" style="margin-bottom: 2px" class="btn btn-primary">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ISBN_13" style="margin-bottom: 2px; padding-left: 25px; padding-right: 25px;" class="btn btn-primary">Edit</a>
+                <a asp-action="Delete" asp-route-id="@item.ISBN_13" style="margin-bottom: 2px; padding-right: 18px; padding-left: 18px" class="btn btn-primary">Delete</a>
                 @* This should link to the Review controller to create a new review for this particular book and user. If the review already exists, then redirect to the Edit action *@
                 <a asp-controller="Reviews" asp-action="Create" asp-route-Isbn_13="@item.ISBN_13" class="btn btn-primary">Review</a>
             </td>
