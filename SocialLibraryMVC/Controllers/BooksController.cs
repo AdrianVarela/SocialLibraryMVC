@@ -23,9 +23,12 @@ namespace SocialLibraryMVC.Controllers
         // GET: Books
         public async Task<IActionResult> Index(string searchString)
         {
-            ViewData["CurrentFilter"] = searchString;
             var applicationDbContext = _context.Books.Include(b => b.Authors);
-            foreach(var book in applicationDbContext)
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                applicationDbContext = _context.Books.Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+            }
+            foreach (var book in applicationDbContext)
             {
                 var reviews = _context.Reviews.Where(r => r.Isbn_13 == book.ISBN_13);
                 int sumRating = 0;
