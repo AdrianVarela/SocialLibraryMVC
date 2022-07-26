@@ -1,3 +1,4 @@
 ﻿If you have an idea, just add it to this list:
 User-Defined Exceptions
 Make a working search bar
+toastr support

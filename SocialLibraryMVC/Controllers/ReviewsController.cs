@@ -112,7 +112,7 @@ namespace SocialLibraryMVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["User_id"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", reviews.User_id);
+            ViewData["User_id"] = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ViewData["ISBN_13"] = reviews.Isbn_13;
             return View(reviews);
         }
