@@ -76,13 +76,8 @@
         xhttp.onload = function() {
                 document.getElementById("reviewsDisplay").innerHTML = this.responseText; 
         }
-        if ($("body").outerHeight(true) > $(window).height()) {
-                $("footer").css("position","relative");
-            } else {
-                $("footer").css("position","fixed");
-                $("footer").css("bottom","0px");
-            }
  }
+
 loadDoc();
 </script>
 <div>
