@@ -21,10 +21,10 @@ namespace SocialLibraryMVC.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
+            ViewData["CurrentFilter"] = searchString;
             var applicationDbContext = _context.Books.Include(b => b.Authors);
-            // This foreach is to get the average ratings and the number of ratings for each book that will be displayed
             foreach(var book in applicationDbContext)
             {
                 var reviews = _context.Reviews.Where(r => r.Isbn_13 == book.ISBN_13);
