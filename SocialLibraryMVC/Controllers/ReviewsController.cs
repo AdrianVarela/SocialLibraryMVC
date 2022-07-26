@@ -112,7 +112,7 @@ namespace SocialLibraryMVC.Controllers
             {
                 return NotFound();
             }
-            if (IsAuthorized(reviews.User_id))
+            if (!IsAuthorized(reviews.User_id))
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -175,7 +175,7 @@ namespace SocialLibraryMVC.Controllers
                 return NotFound();
             }
 
-            if(IsAuthorized(reviews.User_id))
+            if(!IsAuthorized(reviews.User_id))
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -196,7 +196,7 @@ namespace SocialLibraryMVC.Controllers
             var reviews = await _context.Reviews.FindAsync(id);
             if (reviews != null)
             {
-                if (IsAuthorized(reviews.User_id))
+                if (!IsAuthorized(reviews.User_id))
                 {
                     return RedirectToAction(nameof(Index));
                 }
