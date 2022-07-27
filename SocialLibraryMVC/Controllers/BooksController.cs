@@ -126,6 +126,7 @@ namespace SocialLibraryMVC.Controllers
                 }
                 _context.Add(books);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Book added successfully!!"; //Toastr
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorId);
@@ -191,6 +192,7 @@ namespace SocialLibraryMVC.Controllers
                 {
                     _context.Update(books);
                     await _context.SaveChangesAsync();
+                    TempData["success"] = "Book edited successfully!!"; //Toastr
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -203,6 +205,7 @@ namespace SocialLibraryMVC.Controllers
                         throw;
                     }
                 }
+                
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Authors, "Id", "Name", books.AuthorId);
@@ -246,6 +249,7 @@ namespace SocialLibraryMVC.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["success"] = "Book deleted successfully!!"; //Toastr
             return RedirectToAction(nameof(Index));
         }
 
