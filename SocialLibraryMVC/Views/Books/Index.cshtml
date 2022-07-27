@@ -23,13 +23,13 @@
                 @Html.DisplayNameFor(model => model.Cover)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Title)</a>
             </th>
             <th style="text-align:center;">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th> 
-                @Html.DisplayNameFor(model => model.Authors)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.Authors)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Genre)

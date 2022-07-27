@@ -21,12 +21,43 @@ namespace SocialLibraryMVC.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
             var applicationDbContext = _context.Books.Include(b => b.Authors);
             if (!String.IsNullOrEmpty(searchString))
             {
-                applicationDbContext = _context.Books.Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+                switch (sortOrder)
+                {
+                    case "name_desc":
+                        applicationDbContext = _context.Books.OrderByDescending(b => b.Title).Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+                        break;
+                    case "Date":
+                        applicationDbContext = _context.Books.OrderBy(b => b.Authors).Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+                        break;
+                    case "date_desc":
+                        applicationDbContext = _context.Books.OrderByDescending(b => b.Authors).Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+                        break;
+                    default:
+                        applicationDbContext = _context.Books.OrderBy(b => b.Title).Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+                        break;
+                }
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    applicationDbContext = _context.Books.OrderByDescending(b => b.Title).Include(b => b.Authors);
+                    break;
+                case "Date":
+                    applicationDbContext = _context.Books.OrderBy(b => b.Authors).Include(b => b.Authors);
+                    break;
+                case "date_desc":
+                    applicationDbContext = _context.Books.OrderByDescending(b => b.Authors).Include(b => b.Authors);
+                    break;
+                default:
+                    applicationDbContext = _context.Books.OrderBy(b => b.Title).Include(b => b.Authors);
+                    break;
             }
             foreach (var book in applicationDbContext)
             {
