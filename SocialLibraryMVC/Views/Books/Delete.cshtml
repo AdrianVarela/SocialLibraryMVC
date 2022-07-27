@@ -4,7 +4,7 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1 style="padding-top: 15px;">Delete</h1>
 
 <h3>Are You Sure You Want to Delete This Book?</h3>
 <div>
@@ -50,13 +50,21 @@
             @Html.DisplayNameFor(model => model.Cover)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cover)
+            @if (ViewBag.Cover != null)
+            {
+                <img id="cover" style="width:150px;height:250px; object-fit:cover" src="data:image/*;)">
+            }
+            else
+            {
+                <img id="cover" style="width:150px;height:250px; object-fit:cover" src="">
+            }
+            @*@Html.DisplayFor(model => model.Cover)*@
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ISBN_13" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index" input class="btn btn-success">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index" input class="btn btn-default">Back to List</a>
     </form>
 </div>
