@@ -28,6 +28,7 @@ namespace SocialLibraryMVC.Controllers
         {
             var applicationDbContext = _context.Reviews.OrderByDescending(r => r.Id).Where(r => r.Id > _context.Reviews.OrderBy(r => r.Id).Last().Id - 10).Include(r => r.Books).Include(r => r.User);
             var users = _context.Users;
+            ViewData["CurrentUser"] = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -46,7 +47,7 @@ namespace SocialLibraryMVC.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["CurrentUser"] = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return View(reviews);
         }
 
@@ -92,6 +93,7 @@ namespace SocialLibraryMVC.Controllers
             {
                 _context.Add(reviews);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Review created successfully!!"; //Toastr
                 return RedirectToAction(nameof(Index));
             }
             ViewData["User_id"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", reviews.User_id);
@@ -140,6 +142,7 @@ namespace SocialLibraryMVC.Controllers
                 {
                     _context.Update(reviews);
                     await _context.SaveChangesAsync();
+                    TempData["success"] = "Review edited successfully!!"; //Toastr
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -204,6 +207,7 @@ namespace SocialLibraryMVC.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["success"] = "Review deleted successfully!!"; //Toastr
             return RedirectToAction(nameof(Index));
         }
 
