@@ -92,6 +92,7 @@ namespace SocialLibraryMVC.Controllers
             {
                 _context.Add(reviews);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Review created successfully!!"; //Toastr
                 return RedirectToAction(nameof(Index));
             }
             ViewData["User_id"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Id", reviews.User_id);
@@ -140,6 +141,7 @@ namespace SocialLibraryMVC.Controllers
                 {
                     _context.Update(reviews);
                     await _context.SaveChangesAsync();
+                    TempData["success"] = "Review edited successfully!!"; //Toastr
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -204,6 +206,7 @@ namespace SocialLibraryMVC.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["success"] = "Review deleted successfully!!"; //Toastr
             return RedirectToAction(nameof(Index));
         }
 
