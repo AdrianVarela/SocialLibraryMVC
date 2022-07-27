@@ -197,6 +197,9 @@ namespace SocialLibraryMVC.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Cover = null;
+            if (books.Cover != null)
+                ViewBag.Cover = books.Cover;
 
             return View(books);
         }
