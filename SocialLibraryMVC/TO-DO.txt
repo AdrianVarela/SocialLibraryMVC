@@ -5,3 +5,4 @@ add icons for details, edit, delete, review on the homepage
 change the previous and next buttons to change pages to numbers instead for what page youre on
 make book reviews tables look nicer
 optional: use javscript to adjust the sort functions so that the page doesnt reloads everytime
+optional: add links dynamically to each book entry that takes you to a page like amazon
