@@ -24,13 +24,13 @@
             <th style="text-align:center;">
                 Cover
             </th>
-            <th>
+            <th style="text-align:center;">
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Title</a>
             </th>
             <th style="text-align:center;">
                 Description
             </th>
-            <th> 
+            <th style="text-align:center;">
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Authors</a>
             </th>
             <th style="text-align:center;">
@@ -104,21 +104,58 @@
 @{
     var prevDisabled = !Model.PreviousPage ? "disabled" : "";
     var nextDisabled = !Model.NextPage ? "disabled" : "";
+    var doubleDisabled = Model.PageIndex + 2 <= Model.TotalPages ? "" : "disabled";
+    var seePrev = !Model.PreviousPage ? "-" : $"{Model.PageIndex-1}";
+    var seeNext = !Model.NextPage ? "-" : $"{Model.PageIndex+1}";
+    var seeDouble = Model.PageIndex + 2 <= Model.TotalPages ? $"{Model.PageIndex+2}" : "-";
 }
 
+<p style="margin-bottom:25px">Currently on page @(Model.PageIndex) of @(Model.TotalPages)</p>
 <a asp-action="Index"
+        asp-route-sortOrder="@ViewData["CurrentSort"]"
+        asp-route-pageNumber="1"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+        class="btn btn-default @prevDisabled"
+        style="margin-bottom:25px; outline-color: grey">
+        First
+</a>
+<a
+    asp-action="Index"
         asp-route-sortOrder="@ViewData["CurrentSort"]"
         asp-route-pageNumber="@(Model.PageIndex-1)"
         asp-route-currentFilter="@ViewData["CurrentFilter"]"
         class="btn btn-default @prevDisabled"
-        style="margin-bottom:25px">
-        Previous
+        style="margin-bottom:25px; outline-color: grey">
+        @seePrev
 </a>
-<a asp-action="Index"
+<a
+        class="btn btn-default"
+        style="margin-bottom:25px; color: blue; outline-color: blue; background-color: gray;">
+        @(Model.PageIndex)
+</a>
+<a 
+    asp-action="Index"
         asp-route-sortOrder="@ViewData["CurrentSort"]"
         asp-route-pageNumber="@(Model.PageIndex+1)"
         asp-route-currentFilter="@ViewData["CurrentFilter"]"
         class="btn btn-default @nextDisabled"
-        style="margin-bottom:25px">
-        Next
+        style="margin-bottom:25px; outline-color: grey">
+        @seeNext
+</a>
+<a 
+    asp-action="Index"
+        asp-route-sortOrder="@ViewData["CurrentSort"]"
+        asp-route-pageNumber="@(Model.PageIndex+2)"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+        class="btn btn-default @doubleDisabled"
+        style="margin-bottom:25px; outline-color: grey">
+        @seeDouble
+</a>
+<a asp-action="Index"
+        asp-route-sortOrder="@ViewData["CurrentSort"]"
+        asp-route-pageNumber="@(Model.TotalPages)"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+        class="btn btn-default @nextDisabled"
+        style="margin-bottom:25px; outline-color: grey">
+        Last
 </a>
