@@ -94,8 +94,8 @@
             <td>
                     @if (ViewData["CurrentUser"] != null && item.User_id == (string)ViewData["CurrentUser"])
                     {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-primary">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-primary"><i class="bi bi-trash-fill"></i></a>
                     }
             </td>
         </tr>

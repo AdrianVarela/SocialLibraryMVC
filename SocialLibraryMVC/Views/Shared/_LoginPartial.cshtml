@@ -11,7 +11,8 @@
     <li class="nav-link" style="margin-top:1px"> | </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Books", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link" style="margin-top: 2px">Logout</button>
+            <button  type="submit" class="nav-link btn btn-link" style="margin-top: 2px"> <strong class="bi bi-box-arrow-right" style="display:flex;
+        align-items:center" >&nbsp; Logout</strong>  </button>
         </form>
     </li>
 }
@@ -22,7 +23,8 @@ else
     </li>
     <li style="padding-top: 8px" class="nav-link"> | </li>
     <li class="nav-item">
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login" style="padding-right: 50px">Login</a>
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login" style="padding-right: 50px"> <strong class="bi bi-box-arrow-in-right" style="display:flex;
+        align-items:center">&nbsp; Login</strong>  </a>
     </li>
 }
 </ul>
