@@ -24,14 +24,14 @@
             <th style="text-align:center;">
                 Cover
             </th>
-            <th style="text-align:center;">
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Title</a>
-            </ths>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Title</a>
+            </th>
             <th style="text-align:center;">
                 Description
             </th>
-            <th style="text-align:center;"> 
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSortParm"]">Authors</a>
+            <th> 
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Authors</a>
             </th>
             <th style="text-align:center;">
                 Genre
@@ -108,13 +108,17 @@
 }
 
 <a asp-action="Index"
+        asp-route-sortOrder="@ViewData["CurrentSort"]"
         asp-route-pageNumber="@(Model.PageIndex-1)"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
         class="btn btn-default @prevDisabled"
         style="margin-bottom:25px">
         Previous
 </a>
 <a asp-action="Index"
+        asp-route-sortOrder="@ViewData["CurrentSort"]"
         asp-route-pageNumber="@(Model.PageIndex+1)"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
         class="btn btn-default @nextDisabled"
         style="margin-bottom:25px">
         Next

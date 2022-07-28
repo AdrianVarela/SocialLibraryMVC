@@ -15,6 +15,30 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+// Dependencies Injection for Authentication
+builder.Services.AddAuthentication()
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = builder.Configuration["Google:ClientId"];
+        googleOptions.ClientSecret = builder.Configuration["Google:ClientSecret"];
+    })
+    .AddFacebook(facebookOptions =>
+    {
+        facebookOptions.ClientId = builder.Configuration["Facebook:AppId"];
+        facebookOptions.ClientSecret = builder.Configuration["Facebook:AppSecret"];
+    })
+    .AddMicrosoftAccount(MicrosoftAccountOptions =>
+    {
+        MicrosoftAccountOptions.ClientId = builder.Configuration["MicrosoftAccount:ClientId"];
+        MicrosoftAccountOptions.ClientSecret = builder.Configuration["MicrosoftAccount:ClientSecret"];
+    })
+    .AddTwitter(TwitterOptions =>
+    {
+        TwitterOptions.ConsumerKey = builder.Configuration["Twitter:APIkey"];
+        TwitterOptions.ConsumerSecret = builder.Configuration["Twitter:APISecret"];
+    });
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
