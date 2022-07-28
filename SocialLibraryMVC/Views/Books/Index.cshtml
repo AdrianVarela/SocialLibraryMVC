@@ -95,7 +95,7 @@
                 <a asp-action="Delete" asp-route-id="@item.ISBN_13" style="margin-bottom: 2px; padding-right: 18px; padding-left: 18px" class="btn btn-primary">Delete</a>
                 @* This should link to the Review controller to create a new review for this particular book and user. If the review already exists, then redirect to the Edit action *@
                 <a asp-controller="Reviews" asp-action="Create" asp-route-Isbn_13="@item.ISBN_13" class="btn btn-primary">Review</a>
-                @*<a asp-controller="UserFavorites" asp-action="Create" asp-route-ISBN_13="@item.ISBN_13" class="btn btn-light">Favorite</a>*@
+                <a asp-controller="UserFavorites" asp-action="Create" asp-route-ISBN_13="@item.ISBN_13" class="btn btn-light">Favorite</a>
             </td>
         </tr>
 }

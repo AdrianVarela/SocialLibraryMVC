@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using SocialLibraryMVC.Data;
 using SocialLibraryMVC.Models;
 using ImageMagick;
+using System.Security.Claims;
 
 namespace SocialLibraryMVC.Controllers
 {
@@ -87,6 +88,9 @@ namespace SocialLibraryMVC.Controllers
                 ViewData["AverageRating"+book.ISBN_13] = (reviews.Count()>0)?((double)sumRating / reviews.Count()) : 0;
                 ViewData["CountRating"+book.ISBN_13] = reviews.Count();
             }
+
+            ViewBag.Favorites = _context.UserFavorites.Where(f => f.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+
             return View(await PaginatedList<Book>.CreateAsync(applicationDbContext, pageNumber ?? 1, 10));
         }
 

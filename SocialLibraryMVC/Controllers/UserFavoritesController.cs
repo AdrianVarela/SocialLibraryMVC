@@ -51,24 +51,37 @@ namespace SocialLibraryMVC.Controllers
 
         // GET: UserFavorites/Create
         [Authorize]
-        public IActionResult Create(long ISBN_13)
+        public async Task<IActionResult> Create([Bind("ISBN_13")] long ISBN_13)
         {
-            ViewData["ISBN_13"] = new SelectList(_context.Books, "ISBN_13", "Title");
-            UserFavorites userFavorite = new UserFavorites();
-            userFavorite.ISBN_13 = ISBN_13;
-            userFavorite.User_id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return RedirectToAction(nameof(Create), userFavorite);
-        }
+            var userFavoritesExists = await _context.UserFavorites.Where(f => f.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefaultAsync(f => f.ISBN_13 == ISBN_13);
+            if(userFavoritesExists != null)
+            {
+                return RedirectToAction(nameof(Delete), ISBN_13);
+            }
+            UserFavorites userFavorites = new UserFavorites();
+            userFavorites.User_id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            userFavorites.ISBN_13 = ISBN_13;
 
+            if (ModelState.IsValid)
+            {
+                _context.Add(userFavorites);
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            return NoContent();
+            //return RedirectToAction(nameof(Index), nameof(BooksController));
+            //return RedirectToAction(nameof(Create), route);
+        }
+/*
         // POST: UserFavorites/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("User_id,ISBN_13")] UserFavorites userFavorites)
+        public async Task<IActionResult> Create([Bind("Id, User_id,ISBN_13")] UserFavorites userFavorites)
         {
-            userFavorites.User_id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //userFavorites.User_id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             string tempUser = ClaimTypes.NameIdentifier;
             if (ModelState.IsValid)
             {
@@ -78,7 +91,7 @@ namespace SocialLibraryMVC.Controllers
             }
             ViewData["ISBN_13"] = new SelectList(_context.Books, "ISBN_13", "Title", userFavorites.ISBN_13);
             return View(userFavorites);
-        }
+        }*/
 
         // GET: UserFavorites/Edit/5
         [Authorize]
@@ -137,9 +150,35 @@ namespace SocialLibraryMVC.Controllers
 
         // GET: UserFavorites/Delete/5
         [Authorize]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete([Bind("Id")]int? id)
         {
             if (id == null || _context.UserFavorites == null)
+            {
+                return NoContent();
+            }
+
+            var userFavorites = await _context.UserFavorites
+                .Include(u => u.Books)
+                .Include(u => u.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (userFavorites == null)
+            {
+                return NotFound();
+            }
+            if (_context.UserFavorites == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.UserFavorites'  is null.");
+            }
+            //var userFavorites = await _context.UserFavorites.Where(f => f.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefaultAsync(f => f.ISBN_13 == ISBN_13);
+            if (userFavorites != null)
+            {
+                _context.UserFavorites.Remove(userFavorites);
+            }
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+
+/*            if (id == null || _context.UserFavorites == null)
             {
                 return NotFound();
             }
@@ -153,10 +192,10 @@ namespace SocialLibraryMVC.Controllers
                 return NotFound();
             }
 
-            return View(userFavorites);
+            return View(userFavorites);*/
         }
 
-        // POST: UserFavorites/Delete/5
+/*        // POST: UserFavorites/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -171,10 +210,10 @@ namespace SocialLibraryMVC.Controllers
             {
                 _context.UserFavorites.Remove(userFavorites);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
+        }*/
 
         private bool UserFavoritesExists(int id)
         {
