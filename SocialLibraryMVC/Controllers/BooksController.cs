@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialLibraryMVC.Data;
 using SocialLibraryMVC.Models;
+using ImageMagick;
 
 namespace SocialLibraryMVC.Controllers
 {
@@ -118,9 +119,17 @@ namespace SocialLibraryMVC.Controllers
                 if (Request.Form.Files.Count > 0)
                 {
                     IFormFile file = Request.Form.Files.FirstOrDefault();
+
                     using (var dataStream = new MemoryStream())
                     {
                         await file.CopyToAsync(dataStream);
+
+                        Console.WriteLine(dataStream.Length);
+                        var optimizer = new ImageOptimizer();
+                        dataStream.Position = 0;
+                        optimizer.Compress(dataStream);
+                        Console.WriteLine(dataStream.Length);
+
                         books.Cover = dataStream.ToArray();
                     }
                 }
@@ -178,6 +187,13 @@ namespace SocialLibraryMVC.Controllers
                     using (var dataStream = new MemoryStream())
                     {
                         await file.CopyToAsync(dataStream);
+
+                        var before = dataStream.Length;
+                        var optimizer = new ImageOptimizer();
+                        dataStream.Position = 0;
+                        optimizer.Compress(dataStream);
+                        var after = dataStream.Length;
+
                         books.Cover = dataStream.ToArray();
                     }
                 }
