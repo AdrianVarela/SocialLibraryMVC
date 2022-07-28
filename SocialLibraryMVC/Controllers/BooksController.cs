@@ -21,12 +21,25 @@ namespace SocialLibraryMVC.Controllers
             _context = context;
         }
 
+
         // GET: Books
-        public async Task<IActionResult> Index(string sortOrder, string searchString, int pageNumber=1)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["AuthorSortParm"] = sortOrder == "Author" ? "auther_desc" : "Author";
             var applicationDbContext = _context.Books.Include(b => b.Authors);
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["currentFilter"] = searchString;
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 switch (sortOrder)
@@ -45,20 +58,23 @@ namespace SocialLibraryMVC.Controllers
                         break;
                 }
             }
-            switch (sortOrder)
+            else
             {
-                case "name_desc":
-                    applicationDbContext = _context.Books.OrderByDescending(b => b.Title).Include(b => b.Authors);
-                    break;
-                case "Author":
-                    applicationDbContext = _context.Books.OrderBy(b => b.Authors).Include(b => b.Authors);
-                    break;
-                case "author_desc":
-                    applicationDbContext = _context.Books.OrderByDescending(b => b.Authors).Include(b => b.Authors);
-                    break;
-                default:
-                    applicationDbContext = _context.Books.OrderBy(b => b.Title).Include(b => b.Authors);
-                    break;
+                switch (sortOrder)
+                {
+                    case "name_desc":
+                        applicationDbContext = _context.Books.OrderByDescending(b => b.Title).Include(b => b.Authors);
+                        break;
+                    case "Author":
+                        applicationDbContext = _context.Books.OrderBy(b => b.Authors).Include(b => b.Authors);
+                        break;
+                    case "author_desc":
+                        applicationDbContext = _context.Books.OrderByDescending(b => b.Authors).Include(b => b.Authors);
+                        break;
+                    default:
+                        applicationDbContext = _context.Books.OrderBy(b => b.Title).Include(b => b.Authors);
+                        break;
+                }
             }
             foreach (var book in applicationDbContext)
             {
@@ -71,7 +87,7 @@ namespace SocialLibraryMVC.Controllers
                 ViewData["AverageRating"+book.ISBN_13] = (reviews.Count()>0)?((double)sumRating / reviews.Count()) : 0;
                 ViewData["CountRating"+book.ISBN_13] = reviews.Count();
             }
-            return View(await PaginatedList<Book>.CreateAsync(applicationDbContext, pageNumber, 10));
+            return View(await PaginatedList<Book>.CreateAsync(applicationDbContext, pageNumber ?? 1, 10));
         }
 
         // GET: Books/Details/5
@@ -124,13 +140,21 @@ namespace SocialLibraryMVC.Controllers
                     {
                         await file.CopyToAsync(dataStream);
 
-                        Console.WriteLine(dataStream.Length);
-                        var optimizer = new ImageOptimizer();
-                        dataStream.Position = 0;
-                        optimizer.Compress(dataStream);
-                        Console.WriteLine(dataStream.Length);
-
-                        books.Cover = dataStream.ToArray();
+                        if (dataStream.Length > 50000)
+                        {
+                            //var optimizer = new ImageOptimizer();
+                            dataStream.Position = 0;
+                            var image = new MagickImage(dataStream);
+                            var before = image.ToByteArray().Length;
+                            var size = new MagickGeometry(300, 500);
+                            image.Resize(size);
+                            var after = image.ToByteArray().Length;
+                            books.Cover = image.ToByteArray();
+                        }
+                        else
+                        {
+                            books.Cover = dataStream.ToArray();
+                        }
                     }
                 }
                 _context.Add(books);
@@ -188,13 +212,21 @@ namespace SocialLibraryMVC.Controllers
                     {
                         await file.CopyToAsync(dataStream);
 
-                        var before = dataStream.Length;
-                        var optimizer = new ImageOptimizer();
-                        dataStream.Position = 0;
-                        optimizer.Compress(dataStream);
-                        var after = dataStream.Length;
-
-                        books.Cover = dataStream.ToArray();
+                        if (dataStream.Length > 50000)
+                        {
+                            //var optimizer = new ImageOptimizer();
+                            dataStream.Position = 0;
+                            var image = new MagickImage(dataStream);
+                            var before = image.ToByteArray().Length; 
+                            var size = new MagickGeometry(300, 500);
+                            image.Resize(size);
+                            var after = image.ToByteArray().Length;
+                            books.Cover = image.ToByteArray();
+                        }
+                        else
+                        {
+                            books.Cover = dataStream.ToArray();
+                        }
                     }
                 }
                 // if there is an edit and no file is uploaded (meaning no new cover), keep the old cover

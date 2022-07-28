@@ -16,7 +16,7 @@ namespace SocialLibraryMVC.Models
         public virtual Author? Authors { get; set; }
         public Genre Genre { get; set; }
         public int PublishYear { get; set; }
-        [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "ISBN-10 should be 10 integers long")]
+        [RegularExpression(@"^[0-9]{1,10}$", ErrorMessage = "ISBN-10 should be 10 integers long")]
         //
         public long? ISBN_10 { get; set; }
         // ISBN_13 should be 13 integers long, no longer and no shorter

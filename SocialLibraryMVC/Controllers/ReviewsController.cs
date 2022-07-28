@@ -28,7 +28,7 @@ namespace SocialLibraryMVC.Controllers
         {
             var applicationDbContext = _context.Reviews.OrderByDescending(r => r.Id).Where(r => r.Id > _context.Reviews.OrderBy(r => r.Id).Last().Id - 10).Include(r => r.Books).Include(r => r.User);
             var users = _context.Users;
-            ViewData["CurrentUser"] = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ViewData["CurrentUser"] = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -47,7 +47,7 @@ namespace SocialLibraryMVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["CurrentUser"] = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ViewData["CurrentUser"] = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return View(reviews);
         }
 
