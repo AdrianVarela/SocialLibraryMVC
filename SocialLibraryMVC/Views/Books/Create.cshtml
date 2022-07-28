@@ -59,11 +59,11 @@
                 
                 @if (ViewBag.Cover != null)
                 {
-                    <img id="cover" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(ViewBag.Cover))">
+                    <img id="cover" style="width:150px;height:250px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(ViewBag.Cover))">
                 }
                 else
                 {
-                    <img id="cover" style="width:350px;height:350px; object-fit:cover" src="">
+                    <img id="cover" style="width:150px;height:250px; object-fit:cover" src="">
                 }
             </div>
             <div class="form-group" style="margin-bottom: 25px">
