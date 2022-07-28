@@ -22,12 +22,43 @@ namespace SocialLibraryMVC.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string searchString, int pageNumber=1)
         {
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["AuthorSortParm"] = sortOrder == "Author" ? "auther_desc" : "Author";
             var applicationDbContext = _context.Books.Include(b => b.Authors);
             if (!String.IsNullOrEmpty(searchString))
             {
-                applicationDbContext = _context.Books.Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+                switch (sortOrder)
+                {
+                    case "name_desc":
+                        applicationDbContext = _context.Books.OrderByDescending(b => b.Title).Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+                        break;
+                    case "Author":
+                        applicationDbContext = _context.Books.OrderBy(b => b.Authors).Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+                        break;
+                    case "author_desc":
+                        applicationDbContext = _context.Books.OrderByDescending(b => b.Authors).Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+                        break;
+                    default:
+                        applicationDbContext = _context.Books.OrderBy(b => b.Title).Where(b => b.Title.Contains(searchString)).Include(b => b.Authors);
+                        break;
+                }
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    applicationDbContext = _context.Books.OrderByDescending(b => b.Title).Include(b => b.Authors);
+                    break;
+                case "Author":
+                    applicationDbContext = _context.Books.OrderBy(b => b.Authors).Include(b => b.Authors);
+                    break;
+                case "author_desc":
+                    applicationDbContext = _context.Books.OrderByDescending(b => b.Authors).Include(b => b.Authors);
+                    break;
+                default:
+                    applicationDbContext = _context.Books.OrderBy(b => b.Title).Include(b => b.Authors);
+                    break;
             }
             foreach (var book in applicationDbContext)
             {
@@ -40,7 +71,7 @@ namespace SocialLibraryMVC.Controllers
                 ViewData["AverageRating"+book.ISBN_13] = (reviews.Count()>0)?((double)sumRating / reviews.Count()) : 0;
                 ViewData["CountRating"+book.ISBN_13] = reviews.Count();
             }
-            return View(await applicationDbContext.ToListAsync());
+            return View(await PaginatedList<Book>.CreateAsync(applicationDbContext, pageNumber, 10));
         }
 
         // GET: Books/Details/5

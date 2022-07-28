@@ -64,7 +64,13 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ISBN_13" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index" input class="btn btn-default">Back to List</a>
+        <div style="margin-bottom: 25px">
+            <input type="submit" value="Delete" class="btn btn-default"/> |
+            <a asp-action="Index" input class="btn btn-default">Back to List</a>
+        </div>
     </form>
+    <div class="form-group">
+        &nbsp;
+        &nbsp;
+    </div>
 </div>
