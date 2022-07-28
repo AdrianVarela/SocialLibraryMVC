@@ -43,7 +43,7 @@
                 @Html.DisplayFor(modelItem => item.Books.Title)
             </td>
             <td>
-                    @if (item.User_id == (string)ViewData["CurrentUser"])
+                    @if (ViewData["CurrentUser"] != null && item.User_id == (string)ViewData["CurrentUser"])
                     {
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-primary">Delete</a>
