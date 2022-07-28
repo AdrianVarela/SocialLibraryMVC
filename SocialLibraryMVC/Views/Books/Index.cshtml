@@ -21,31 +21,31 @@
 <table class="table">
     <thead style="text-align:center;"> 
         <tr>
-            <th>
+            <th style="text-align:center;">
                 Cover
             </th>
-            <th>
+            <th style="text-align:center;">
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Title</a>
-            </th>
+            </ths>
             <th style="text-align:center;">
                 Description
             </th>
-            <th> 
+            <th style="text-align:center;"> 
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSortParm"]">Authors</a>
             </th>
-            <th>
+            <th style="text-align:center;">
                 Genre
             </th>
-            <th>
+            <th style="text-align:center;">
                 Year Published
             </th>
-            <th>
+            <th style="text-align:center;">
                 ISBN 10
             </th>
-            <th>
+            <th style="text-align:center;">
                 ISBN 13
             </th>
-            <th>
+            <th style="text-align:center;">
                 Rating
             </th>
         </tr>
@@ -67,7 +67,7 @@
             <td style="text-align:center;">
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
-            <td>
+            <td style="text-align:center;">
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td style="text-align:center;">
