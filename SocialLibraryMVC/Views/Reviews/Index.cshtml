@@ -4,9 +4,57 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 style="text-align:center;">Book Reviews</h1>
+<h1 style="text-align:center;">Ten Most Recent Book Reviews</h1>
 
-<table class="table">
+
+  <style type="text/css">
+/* controls overall styles of the table*/
+  table.t1 {
+    margin: 1em auto;
+    border-collapse: collapse;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+ /* controls spacing between titles and information*/
+  .t1 th, .t1 td {
+    padding: 4px 8px;
+  }
+/*  changes components of all the titles in the table*/
+  .t1 thead th {
+    background: #ff6666;
+    text-transform: capitalize;
+    text-align: center;
+    font-size: 15px;
+    color: #fff;
+  }
+ /* changes left and right border colors*/
+  .t1 tr {
+    border-right: 1px solid #ff9999;
+    border-left: 1px solid #ff9999;
+  }
+  /*changes row bottom border color*/
+  .t1 tbody tr {
+    border-bottom: 1px solid #ff9999;
+  }
+  .t1 tr *:nth-child(1) {
+    border-right: 1px solid #ff9999;
+  }
+ /* changes row color for odd entries*/
+  .t1 tbody tr:nth-child(odd) {
+    background: #ffcccc;
+  }
+   /* changes row color for even entries*/
+  .t1 tbody tr:nth-child(even) {
+    background: white;
+  }
+ /* adjusts components for 1st, 3rd and 4th columns (rating and title)*/
+  .t1 tr *:nth-child(1), .t1 tr *:nth-child(3), .t1 tr *:nth-child(4) {
+    text-align: center;
+  }
+</style>
+
+
+
+<table class="t1">
     <thead style="text-align:center;">
         <tr>
             <th>
@@ -25,8 +73,11 @@
         </tr>
     </thead>
     <tbody>
+
+
+
 @foreach (var item in Model) {
-        <tr style="text-align:center;">
+        <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.User.UserName)
             </td>
