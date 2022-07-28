@@ -124,13 +124,21 @@ namespace SocialLibraryMVC.Controllers
                     {
                         await file.CopyToAsync(dataStream);
 
-                        Console.WriteLine(dataStream.Length);
-                        var optimizer = new ImageOptimizer();
-                        dataStream.Position = 0;
-                        optimizer.Compress(dataStream);
-                        Console.WriteLine(dataStream.Length);
-
-                        books.Cover = dataStream.ToArray();
+                        if (dataStream.Length > 50000)
+                        {
+                            //var optimizer = new ImageOptimizer();
+                            dataStream.Position = 0;
+                            var image = new MagickImage(dataStream);
+                            var before = image.ToByteArray().Length;
+                            var size = new MagickGeometry(300, 500);
+                            image.Resize(size);
+                            var after = image.ToByteArray().Length;
+                            books.Cover = image.ToByteArray();
+                        }
+                        else
+                        {
+                            books.Cover = dataStream.ToArray();
+                        }
                     }
                 }
                 _context.Add(books);
