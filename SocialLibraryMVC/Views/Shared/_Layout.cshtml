@@ -81,11 +81,20 @@
         </main>
     </div>
 
-    <footer class="border-top text-muted">
-        <div class="container">
-            &copy; 2022 - SocialLibraryMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-muted">Privacy</a>
-        </div>
-    </footer>
+    <style>
+        #footer {
+            position: fixed;
+            padding: 10px 10px 0px 10px;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background: white;
+            border: top;
+        }
+    </style>
+    <div id="footer">
+        &copy; 2022 - SocialLibraryMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-dark">Privacy</a>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
