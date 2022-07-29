@@ -57,7 +57,7 @@
                     @* If the book has an image attached, take the Cover byte array and convert it into an image. If there is no image, keep the space, but don't display anything*@
                     @if (item.Cover != null)
                     {
-                        <img id="cover" style="width:160px;height:220px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Cover))">
+                        <img id="cover" style="width:150px;height:220px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Cover))">
                     }
                     else
                     {
