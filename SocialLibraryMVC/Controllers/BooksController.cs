@@ -26,6 +26,7 @@ namespace SocialLibraryMVC.Controllers
         // GET: Books
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            //Get the way the data should be sorted from UI
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["AuthorSortParm"] = sortOrder == "Author" ? "auther_desc" : "Author";
@@ -41,6 +42,7 @@ namespace SocialLibraryMVC.Controllers
 
             ViewData["currentFilter"] = searchString;
 
+            //If the search bar has information display only books with title's containing the query.
             if (!String.IsNullOrEmpty(searchString))
             {
                 switch (sortOrder)
@@ -59,6 +61,7 @@ namespace SocialLibraryMVC.Controllers
                         break;
                 }
             }
+            //Otherwise just take the current order, default is Title alphabetically.
             else
             {
                 switch (sortOrder)
@@ -91,8 +94,8 @@ namespace SocialLibraryMVC.Controllers
 
             ViewBag.Favorites = null;
             string? user_id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (user_id != null)
-                ViewBag.Favorites = _context.UserFavorites.Where(f => f.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            //if (user_id != null)
+                //ViewBag.Favorites = _context.UserFavorites.Where(f => f.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
             return View(await PaginatedList<Book>.CreateAsync(applicationDbContext, pageNumber ?? 1, 10));
         }
 
