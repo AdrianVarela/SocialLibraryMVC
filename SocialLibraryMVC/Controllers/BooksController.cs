@@ -151,10 +151,8 @@ namespace SocialLibraryMVC.Controllers
                             //var optimizer = new ImageOptimizer();
                             dataStream.Position = 0;
                             var image = new MagickImage(dataStream);
-                            var before = image.ToByteArray().Length;
                             var size = new MagickGeometry(300, 500);
                             image.Resize(size);
-                            var after = image.ToByteArray().Length;
                             books.Cover = image.ToByteArray();
                         }
                         else
