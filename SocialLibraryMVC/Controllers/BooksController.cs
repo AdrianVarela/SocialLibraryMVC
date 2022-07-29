@@ -89,8 +89,10 @@ namespace SocialLibraryMVC.Controllers
                 ViewData["CountRating"+book.ISBN_13] = reviews.Count();
             }
 
-            ViewBag.Favorites = _context.UserFavorites.Where(f => f.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
-
+            ViewBag.Favorites = null;
+            string? user_id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (user_id != null)
+                ViewBag.Favorites = _context.UserFavorites.Where(f => f.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
             return View(await PaginatedList<Book>.CreateAsync(applicationDbContext, pageNumber ?? 1, 10));
         }
 

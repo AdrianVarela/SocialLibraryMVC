@@ -93,7 +93,7 @@ namespace SocialLibraryMVC.Controllers
             return View(userFavorites);
         }*/
 
-        // GET: UserFavorites/Edit/5
+/*        // GET: UserFavorites/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -146,13 +146,13 @@ namespace SocialLibraryMVC.Controllers
             }
             ViewData["ISBN_13"] = new SelectList(_context.Books, "ISBN_13", "Title", userFavorites.ISBN_13);
             return View(userFavorites);
-        }
+        }*/
 
         // GET: UserFavorites/Delete/5
         [Authorize]
-        public async Task<IActionResult> Delete([Bind("Id")]int? id)
+        public async Task<IActionResult> Delete(long? ISBN_13)
         {
-            if (id == null || _context.UserFavorites == null)
+            if (ISBN_13 == null || _context.UserFavorites == null)
             {
                 return NoContent();
             }
@@ -160,7 +160,7 @@ namespace SocialLibraryMVC.Controllers
             var userFavorites = await _context.UserFavorites
                 .Include(u => u.Books)
                 .Include(u => u.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ISBN_13 == ISBN_13);
             if (userFavorites == null)
             {
                 return NotFound();
@@ -218,6 +218,22 @@ namespace SocialLibraryMVC.Controllers
         private bool UserFavoritesExists(int id)
         {
           return (_context.UserFavorites?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+
+        public async Task<IActionResult> _Favorite([Bind("ISBN_13")] long ISBN_13)
+        {
+            string? user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (user == null)
+                return NoContent();
+            ViewData["ISBN_13"] = ISBN_13;
+            var userFavoritesExists = await _context.UserFavorites.Where(f => f.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value).FirstOrDefaultAsync(f => f.ISBN_13 == ISBN_13);
+
+            if (userFavoritesExists != null)
+            {
+                return PartialView("_Unfavorite");
+            }
+            return PartialView("_Favorite");
         }
     }
 }
