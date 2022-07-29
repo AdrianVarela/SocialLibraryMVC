@@ -77,6 +77,8 @@ namespace SocialLibraryMVC.Controllers
                         break;
                 }
             }
+
+            // This to find all the reviews and add them to the ViewData for each book 
             foreach (var book in applicationDbContext)
             {
                 var reviews = _context.Reviews.Where(r => r.Isbn_13 == book.ISBN_13);
@@ -148,13 +150,11 @@ namespace SocialLibraryMVC.Controllers
 
                         if (dataStream.Length > 50000)
                         {
-                            //var optimizer = new ImageOptimizer();
+                            // Magick.NET to resize the image if its too big
                             dataStream.Position = 0;
                             var image = new MagickImage(dataStream);
-                            var before = image.ToByteArray().Length;
                             var size = new MagickGeometry(300, 500);
                             image.Resize(size);
-                            var after = image.ToByteArray().Length;
                             books.Cover = image.ToByteArray();
                         }
                         else
@@ -220,7 +220,7 @@ namespace SocialLibraryMVC.Controllers
 
                         if (dataStream.Length > 50000)
                         {
-                            //var optimizer = new ImageOptimizer();
+                            // Magick.NET to resize the image if its too big
                             dataStream.Position = 0;
                             var image = new MagickImage(dataStream);
                             var before = image.ToByteArray().Length; 
