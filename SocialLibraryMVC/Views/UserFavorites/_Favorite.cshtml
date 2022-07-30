@@ -3,5 +3,6 @@
 *@
 @{
 }
-<a asp-controller="UserFavorites" asp-action="Create" asp-route-ISBN_13="@ViewData["ISBN_13"]" onclick="setTimeout(loadFavorite, 500,@ViewData["ISBN_13"])" class="btn btn-light">Favorite</a>
-                        
+<a asp-controller="UserFavorites" asp-action="Create" asp-route-ISBN_13="@ViewData["ISBN_13"]" 
+onclick="setTimeout(loadFavorite, 500,@ViewData["ISBN_13"])" onmouseover="FavoriteOver(this)" onmouseout="FavoriteOut(this)"
+style="margin-bottom: 2px; padding-left: 30px; padding-right: 30px;" class="btn btn-light" ><i class="bi bi-heart"></i></a>

@@ -12,3 +12,18 @@ function loadFavorite(ISBN_13) {
     }
     
 }
+
+function FavoriteOver(x) {
+    x.innerHTML = "<i class='bi bi-heart-fill'></i>";
+    
+}
+function UnfavoriteOver(x) {
+    x.innerHTML = "<i class='bi bi-heart'></i>";
+}
+function FavoriteOut(x) {
+    x.innerHTML = "<i class='bi bi-heart'></i>";
+}
+
+function UnfavoriteOut(x) {
+    x.innerHTML = "<i class='bi bi-heart-fill'></i>"
+}
