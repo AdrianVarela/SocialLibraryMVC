@@ -3,4 +3,4 @@
 *@
 @{
 }
-<a asp-controller="UserFavorites" asp-action="Delete" asp-route-ISBN_13="@ViewData["ISBN_13"]" onclick="loadFavorite(@ViewData["ISBN_13"])" class="btn btn-danger">Unfavorite</a>
+<a asp-controller="UserFavorites" asp-action="Delete" asp-route-ISBN_13="@ViewData["ISBN_13"]" onclick="setTimeout(loadFavorite, 500,@ViewData["ISBN_13"])" class="btn btn-dark">Unfavorite</a>

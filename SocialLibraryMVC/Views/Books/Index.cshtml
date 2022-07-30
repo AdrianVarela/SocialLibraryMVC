@@ -115,9 +115,10 @@
                         }
                     }*@
                 <script>
-                    //loadFavorite(@item.ISBN_13);
+                    loadFavorite(@item.ISBN_13)
+                    //setTimeout(loadFavorite, 1000,@item.ISBN_13);
                 </script>
-                <div id="@("FavoriteButton" + item.ISBN_13)">
+                <div onclick="loadFavorite" id="@("FavoriteButton" + item.ISBN_13)">
                 </div>
             </td>
         </tr>

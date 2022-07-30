@@ -3,5 +3,5 @@
 *@
 @{
 }
-<a asp-controller="UserFavorites" asp-action="Create" asp-route-ISBN_13="@ViewData["ISBN_13"]" onclick="loadFavorite(@ViewData["ISBN_13"])" class="btn btn-light">Favorite</a>
+<a asp-controller="UserFavorites" asp-action="Create" asp-route-ISBN_13="@ViewData["ISBN_13"]" onclick="setTimeout(loadFavorite, 500,@ViewData["ISBN_13"])" class="btn btn-light">Favorite</a>
                         
