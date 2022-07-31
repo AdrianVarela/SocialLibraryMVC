@@ -1,6 +1,62 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<SocialLibraryMVC.Models.UserFavorites>
+
 @{
+    ViewData["Title"] = "Index";
 }
 
+<div>
+    <h1 style="padding-top: 15px;">Your Favorites </h1>
+    
+</div>
+ 
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Books.Cover)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books.Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books.PublishYear)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @* If the book has an image attached, take the Cover byte array and convert it into an image. If there is no image, keep the space, but don't display anything*@
+                @if (item.Books.Cover != null)
+                {
+                    <img id="cover" style="width:150px;height:250px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.Books.Cover))">
+                }
+                else
+                {
+                    <img id="cover" style="width:150px;height:200px; object-fit:cover" src="">
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Books.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Books.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Books.PublishYear)
+            </td>
+            <td>
+                <a asp-controller="UserFavorites" asp-action="Delete" asp-route-ISBN_13="@item.ISBN_13" asp-route-inIndex=true 
+                onmouseover="UnfavoriteOver(this)" onmouseout="UnfavoriteOut(this)"
+                style="margin-bottom: 2px; padding-left: 30px; padding-right: 30px;" class="btn btn-danger"><i class="bi bi-heart-fill"></i></a></td>
+        </tr>
+}
+    </tbody>
+</table>

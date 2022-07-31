@@ -25,7 +25,7 @@ namespace SocialLibraryMVC.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.UserFavorites.Include(u => u.Books).Include(u => u.User);
+            var applicationDbContext = _context.UserFavorites.Include(u => u.Books).Where(u => u.User_id == User.FindFirst(ClaimTypes.NameIdentifier).Value);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -150,7 +150,7 @@ namespace SocialLibraryMVC.Controllers
 
         // GET: UserFavorites/Delete/5
         [Authorize]
-        public async Task<IActionResult> Delete(long? ISBN_13)
+        public async Task<IActionResult> Delete(long? ISBN_13, [Bind("inIndex")]bool inIndex = false)
         {
             if (ISBN_13 == null || _context.UserFavorites == null)
             {
@@ -176,6 +176,8 @@ namespace SocialLibraryMVC.Controllers
             }
 
             await _context.SaveChangesAsync();
+            if (inIndex)
+                return RedirectToAction(nameof(Index));
             return NoContent();
 
 /*            if (id == null || _context.UserFavorites == null)

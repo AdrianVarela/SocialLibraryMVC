@@ -81,7 +81,7 @@ namespace SocialLibraryMVC.Controllers
                 }
             }
 
-            // This to find all the reviews and add them to the ViewData for each book 
+            // This to find the average and total reviews and add them to the ViewData for each book 
             foreach (var book in applicationDbContext)
             {
                 var reviews = _context.Reviews.Where(r => r.Isbn_13 == book.ISBN_13);
