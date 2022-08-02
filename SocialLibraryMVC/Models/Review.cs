@@ -13,7 +13,7 @@ namespace SocialLibraryMVC.Models
         // IdentityUser is required when working with identities (users)
         [ForeignKey("User_id")]
         public virtual IdentityUser? User { get; set; }
-
+        [Display(Name = "Text Review")]
 	    public string? Text_review {get;set; }
         [Required]
         // Rating should be 1 through 5
