@@ -4,5 +4,5 @@
 @{
 }
 <a asp-controller="UserFavorites" asp-action="Delete" asp-route-ISBN_13="@ViewData["ISBN_13"]" 
-onclick="setTimeout(loadFavorite, 1000,@ViewData["ISBN_13"])" onmouseover="UnfavoriteOver(this)" onmouseout="UnfavoriteOut(this)"
+onclick="loadFavorite(@ViewData["ISBN_13"], this, false)" onmouseover="UnfavoriteOver(this)" onmouseout="UnfavoriteOut(this)"
 style="margin-bottom: 2px; padding-left: 30px; padding-right: 30px;" class="btn btn-danger"><i class="bi bi-heart-fill"></i></a>
