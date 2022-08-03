@@ -151,15 +151,17 @@ namespace SocialLibraryMVC.Controllers
                     {
                         await file.CopyToAsync(dataStream);
 
+                        // Magick.NET to resize the image if its too big
                         if (dataStream.Length > 50000)
                         {
-                            // Magick.NET to resize the image if its too big
                             dataStream.Position = 0;
                             var image = new MagickImage(dataStream);
+                            // 300 by 500 is bigger than what the website displays, but this is for a better quality image
                             var size = new MagickGeometry(300, 500);
                             image.Resize(size);
                             books.Cover = image.ToByteArray();
                         }
+                        // If the image is small enough, then keep the original size
                         else
                         {
                             books.Cover = dataStream.ToArray();
